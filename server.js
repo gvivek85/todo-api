@@ -32,6 +32,7 @@ apps.post('/todos', function(req, res){
 	todos.push({id: todoNextId, description: body.description, completed: body.completed});
 	
 	todoNextId++;
+	res.send(body);
 });
 
 apps.get('/', function(req, res){
