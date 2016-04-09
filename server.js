@@ -38,6 +38,17 @@ apps.post('/todos', function(req, res){
 	res.send(body);
 });
 
+apps.delete('/todos/:id',function(req, res){
+	var todoId = parseInt(req.params.id, 10);
+	var matchedToDo = _.findWhere(todos, {id: todoId});	
+	
+	if(!matchedToDo)
+		res.status(400).json({"error": "nothing found"});
+	
+	todos = _.without(todos, matchedToDo);	
+	res.json(todos);
+});
+
 apps.get('/', function(req, res){
 	res.send('ToDo API Root');
 });
