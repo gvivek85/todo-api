@@ -12,7 +12,15 @@ var todoNextId = 1;
 apps.use(bodyParser.json());
 
 apps.get('/todos', function(req, res){
-	res.json(todos);
+	var queryParams = req.query;
+	var filtereTodos = todos;
+	
+	if(queryParams.hasOwnProperty('completed') && queryParams.completed == 'true'){
+		filtereTodos = _.where(filtereTodos, {completed : true});
+	} else if(queryParams.hasOwnProperty('completed') && queryParams.completed == 'false'){
+		filtereTodos = _.where(filtereTodos, {completed : false});
+	}
+	res.json(filtereTodos);
 });
 
 apps.get('/todos/:id', function(req, res){
