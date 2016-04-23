@@ -29,18 +29,6 @@ apps.get('/todos', function(req, res){
 	}, function(e){
 		res.status(500).send();
 	});
-	/*if(queryParams.hasOwnProperty('completed') && queryParams.completed == 'true'){
-		filtereTodos = _.where(filtereTodos, {completed : true});
-	} else if(queryParams.hasOwnProperty('completed') && queryParams.completed == 'false'){
-		filtereTodos = _.where(filtereTodos, {completed : false});
-	}
-	
-	if(queryParams.hasOwnProperty('q') && _.isString(queryParams.q) && queryParams.q.length > 0){
-		filtereTodos = _.filter(filtereTodos, function(todo){
-			return (todo.description.toLowerCase().indexOf(queryParams.q.toLowerCase()) > -1);				
-		});
-	}
-	res.json(filtereTodos);*/
 });
 
 apps.get('/todos/:id', function(req, res){
