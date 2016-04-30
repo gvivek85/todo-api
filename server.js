@@ -103,6 +103,19 @@ apps.put('/todos/:id', function(req, res){
 	});
 });
 
+
+//POST add user
+apps.post('/users', function(req, res){
+	var body = _.pick(req.body, 'email', 'password');		
+	db.user.create(body).then(function(todo){
+		if(todo)
+			res.json(todo.toJSON());
+	}, function(e){
+		res.status(400).json(e);
+	});
+});
+
+//Start the server and create the database
 db.sequelize.sync().then(function(){
 	apps.listen(port, function(){
 	console.log('Express listening on Port ' + port);
