@@ -1,3 +1,4 @@
+var bcrypt = require('bcryptjs');
 var express= require('express');
 var bodyParser = require('body-parser');
 var _ = require('underscore');
@@ -103,7 +104,7 @@ apps.put('/todos/:id', function(req, res){
 	});
 });
 
-
+//---------------------USERS API's------------------//
 //POST add user
 apps.post('/users', function(req, res){
 	var body = _.pick(req.body, 'email', 'password');		
@@ -115,8 +116,22 @@ apps.post('/users', function(req, res){
 	});
 });
 
+//POST /users/login
+apps.post('/users/login', function(req, res){
+	var body = _.pick(req.body, 'email', 'password');
+	
+	db.user.authenticate(body).then(function(user){
+		res.json(user.toPublicJSON());
+	}, function(){
+		res.status(401).send({
+			error: "Invalid Login"
+		});
+	});
+		
+});
+
 //Start the server and create the database
-db.sequelize.sync().then(function(){
+db.sequelize.sync({force: true}).then(function(){
 	apps.listen(port, function(){
 	console.log('Express listening on Port ' + port);
 });
