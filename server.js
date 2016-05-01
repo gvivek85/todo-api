@@ -105,6 +105,11 @@ apps.put('/todos/:id', function(req, res){
 });
 
 //---------------------USERS API's------------------//
+
+//GET all users
+apps.get('/users', function(req, res){
+	db.users.findAll().then
+});
 //POST add user
 apps.post('/users', function(req, res){
 	var body = _.pick(req.body, 'email', 'password');		
@@ -121,7 +126,14 @@ apps.post('/users/login', function(req, res){
 	var body = _.pick(req.body, 'email', 'password');
 	
 	db.user.authenticate(body).then(function(user){
-		res.json(user.toPublicJSON());
+		var token = user.generateToken('authentication');
+		if(token){
+			res.header('Auth',token).json(user.toPublicJSON());
+		} else {
+			res.status(401).send({
+			error: "Invalid Login"
+		});
+		}		
 	}, function(){
 		res.status(401).send({
 			error: "Invalid Login"
